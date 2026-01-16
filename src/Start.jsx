@@ -1,10 +1,12 @@
+import noProjects from "./assets/no-projects.png";
+
 export default function Start({onclick}) {
   return (
     <div className="w-[35rem] mt-16 ml-auto mr-auto">
       {" "}
       <div className="mt-24 text-center w-2/3">
         <img
-          src="/src/assets/no-projects.png"
+          src={noProjects}
           className="w-16 h-16 object-contain mx-auto"
           alt="icon"
         />
