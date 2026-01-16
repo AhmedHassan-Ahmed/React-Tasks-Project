@@ -10,6 +10,8 @@ function App() {
   const [ol, ne] = useState();
   const [task, netask] = useState(false);
   const [oldn, nen] = useState(0);
+  const dialog = useRef();
+
   const [taskA, neTaskA] = useState(
     localStorage.getItem("Array1")
       ? JSON.parse(localStorage.getItem("Array1"))
@@ -54,11 +56,14 @@ function App() {
 
   function handleSave() {
     if (
-      title.current.value === "" ||
-      description.current.value === "" ||
-      duDate.current.value === ""
-    )
+      title.current.value.trim() === "" ||
+      description.current.value.trim() === "" ||
+      duDate.current.value.trim() === ""
+    ) {
+      dialog.current.showModal();
       return;
+    }
+
     const newItem = [
       oldn,
       title.current.value,
@@ -88,15 +93,36 @@ function App() {
   }
 
   function handleSave() {
+    if (
+      title.current.value.trim() === "" ||
+      description.current.value.trim() === "" ||
+      duDate.current.value.trim() === ""
+    ) {
+      dialog.current.showModal();
+      return;
+    }
+
     const newItem = [
       oldn,
       title.current.value,
       description.current.value,
       duDate.current.value,
     ];
-    nen((pre) => pre + 1);
+
+   nen((pre) => pre + 1);
     nedata((pre) => [...pre, newItem]);
   }
+
+  function handleDelTask(ele, id) {
+   console.log(old);
+  ne2(prev =>
+    prev.map(item =>
+      Number(item[0]) === Number(id)
+        ? [item[0], ...item.slice(1).filter(v => v !== ele)]
+        : item
+    )
+  );
+}
 
   function handleB(e) {
     let find = oldata.map((pr) => {
@@ -106,6 +132,31 @@ function App() {
   }
   return (
     <>
+      <dialog
+        ref={dialog}
+        className="rounded-xl p-6 w-[22rem] backdrop:bg-black/40
+             shadow-xl border border-stone-200"
+      >
+        <h2 className="text-lg font-semibold text-stone-800 mb-2">
+          Invalid Input
+        </h2>
+
+        <p className="text-stone-600 mb-6">
+          Please fill in all required fields before saving.
+        </p>
+
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={() => dialog.current.close()}
+            className="px-4 py-2 rounded-md bg-stone-200
+                 text-stone-700 hover:bg-stone-300
+                 transition"
+          >
+            OK
+          </button>
+        </div>
+      </dialog>
+
       <main className="flex min-h-screen bg-stone-50">
         <Aside
           task={task}
